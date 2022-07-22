@@ -1,26 +1,49 @@
-﻿namespace SquadronApi.Registers;
+﻿using Microsoft.OpenApi.Models;
+
+namespace SquadronApi.Registers;
 
 public static partial class Register
 {
-	public static IServiceCollection RegisterSwagger(this IServiceCollection services)
-	{
-		services.AddSwaggerGen(options =>
-		{
-			options.CustomSchemaIds(x => x.FullName);
+    public static IServiceCollection RegisterSwagger(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(options =>
+        {
+            options.CustomSchemaIds(x => x.FullName);
 
-			options.EnableAnnotations();
-		});
+            options.EnableAnnotations();
 
-		return services;
+            var securitySchema = new OpenApiSecurityScheme
+            {
+                Description = "Using the Authorization header with the Bearer scheme.",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            };
 
-	}
+            options.AddSecurityDefinition("Bearer", securitySchema);
 
-	public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
-	{
-		app.UseSwagger();
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                { securitySchema, new[] { "Bearer" } }
+            });
+        });
 
-		app.UseSwaggerUI(options => options.DocumentTitle = "File Upload API");
+        return services;
+    }
 
-		return app;
-	}
+    public static IApplicationBuilder UseSwaggerDoc(this IApplicationBuilder app)
+    {
+        app.UseSwagger();
+
+        app.UseSwaggerUI(options => options.DocumentTitle = "File Upload API");
+
+        return app;
+    }
 }

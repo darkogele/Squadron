@@ -20,6 +20,8 @@ public static partial class Register
         // Dependency injection of custom Services
         services.AddScoped<IFileService, FileService>();
 
+        services.AddScoped<IUserService, UserService>();
+
         return services;
     }
 }

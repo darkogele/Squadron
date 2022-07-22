@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Drawing;
+using Microsoft.EntityFrameworkCore;
 using SquadronApi.Data;
 using SquadronApi.Dto_s;
 using SquadronApi.Entities;
@@ -19,6 +20,7 @@ public class FileService : IFileService
     {
         var fileName = Path.GetFileName(file.FileName);
         var listOfFiles = new List<UploadedFileLine>();
+        var colors = Enum.GetNames(typeof(KnownColor)).Select(x => x.ToLower());
 
         using (var reader = new StreamReader(file.OpenReadStream()))
         {
@@ -29,25 +31,37 @@ public class FileService : IFileService
 
                 var values = line.Split(separator: ",").Select(x => x.Trim()).ToArray();
 
-                listOfFiles.Add(new UploadedFileLine()
+                var validateColor = colors.Contains(values[0].ToLower().Trim());
+                var validateNumber = int.TryParse(values[1], out var number);
+                var validateLabel = values[2].Length >= 3;
+
+                if (validateColor && validateNumber && validateLabel)
                 {
-                    Color = values[0],
-                    Number = int.Parse(values[1]),
-                    Label = values[2]
-                });
+                    listOfFiles.Add(new UploadedFileLine()
+                    {
+                        Color = values[0],
+                        Number = number,
+                        Label = values[2]
+                    });
+                }
             }
         }
 
-        // You can use this as json in sql or in monogo/comsmos db to make things more easy
-        var forSql = System.Text.Json.JsonSerializer.Serialize(listOfFiles);
+        // You can use this as json in sql or in monogo/comsmos to make things more easy
+        var jsonData = System.Text.Json.JsonSerializer.Serialize(listOfFiles);
 
-        var fileForDb = new UploadedFile { Lines = listOfFiles, Name = fileName };
+        if (listOfFiles.Count > 0)
+        {
+            var fileForDb = new UploadedFile { Lines = listOfFiles, Name = fileName };
 
-        await _context.FileLines.AddRangeAsync(listOfFiles);
-        await _context.File.AddAsync(fileForDb);
-        await _context.SaveChangesAsync();
+            await _context.FileLines.AddRangeAsync(listOfFiles);
+            await _context.File.AddAsync(fileForDb);
+            await _context.SaveChangesAsync();
 
-        return fileForDb.Id;
+            return fileForDb.Id;
+        }
+
+        return 0;
     }
 
     public async Task<List<string>> GetListOfAllFiles()

@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .RegisterCors()
     .RegisterSwagger()
+    .IdentityServices(builder.Configuration)
     .ApplicationServices(builder.Configuration);
 
 var app = builder.Build();
@@ -25,6 +26,7 @@ app.UseCORS();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -38,8 +40,8 @@ try
     // Cheeks if data base exists if not it will create one and apply migrations
     await context.Database.MigrateAsync();
 
-    // If we need to seed Initial Data bellow 
-
+    // Initial Data created in the Database
+    await Seed.SeedData(context, builder.Configuration);
 }
 catch (Exception ex)
 {

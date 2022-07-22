@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="loginForm">
+      <h1>Log In</h1>
+
+      <mat-form-field class="full-width-input">
+        <input matInput placeholder="Email" formControlName="email" required>
+        <mat-error>
+          Please provide a valid email address
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width-input">
+        <input matInput type="password" placeholder="Password" formControlName="password" required>
+        <mat-error *ngIf="password.hasError('required')">*Password is required</mat-error>
+        <mat-error *ngIf="password.hasError('minlength')">
+          Password must have at least {{minPw}} characters
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button class="loginBtn" color="primary" (click)="login()" type="button"
+        [disabled]="loginForm.invalid">
+        Login
+      </button>
+
+      <button mat-stroked-button class="passwordBtn" color="primary" (click)="forgotPassword()" type="button">
+        Forgot password?
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

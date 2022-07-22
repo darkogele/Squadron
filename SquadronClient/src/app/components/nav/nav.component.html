@@ -8,8 +8,31 @@
     <h1>Squadron</h1>
   </a>
 
-  <div>
+  <div *ngIf="user">
     <a mat-button routerLink='/file-upload' routerLinkActive='active'> File Upload</a>
     <a mat-button routerLink='/grafic' routerLinkActive='active'> Grafic</a>
   </div>
+
+  <span class="spacer"></span>
+
+  <div *ngIf="user">
+    <a mat-button [matMenuTriggerFor]="userMenu">
+      Welcome {{user.displayName}}
+    </a>
+    <mat-menu #userMenu="matMenu">
+      <!-- <button mat-menu-item (click)="editAccount()">
+        <mat-icon>account_circle</mat-icon>
+        <span>Edit</span>
+      </button> -->
+      <!-- <button mat-menu-item (click)="createAccount()">
+        <mat-icon>account_box</mat-icon>
+        <span>Create Account</span>
+      </button> -->
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+
 </mat-toolbar>

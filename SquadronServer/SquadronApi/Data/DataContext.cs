@@ -9,6 +9,7 @@ public class DataContext : DbContext
 
     public DbSet<UploadedFileLine> FileLines => Set<UploadedFileLine>();
     public DbSet<UploadedFile> File => Set<UploadedFile>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
