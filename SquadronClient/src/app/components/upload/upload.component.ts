@@ -45,7 +45,7 @@ export class UploadComponent implements OnInit {
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
         this.toastr.success('File uploaded successfully');
-        this.router.navigate(['/grafic']);
+        this.router.navigate(['/graphic']);
       }
     }
 

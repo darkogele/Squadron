@@ -8,7 +8,7 @@ import { UploadService } from 'src/app/services/upload.service';
   templateUrl: './graphic.component.html',
   styleUrls: ['./graphic.component.scss']
 })
-export class GraficComponent implements OnInit {
+export class GraphicComponent implements OnInit {
   uploadedFilalData: ChartItemDto[] = [];
   listOfFiles: string[] = [];
 

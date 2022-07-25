@@ -6,9 +6,7 @@ import { ChangePassword, Login, User } from '../models/user';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ValidatorFn, AbstractControl, FormGroup } from '@angular/forms';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UserService {
   baseUrl = environment.baseUrl;
 

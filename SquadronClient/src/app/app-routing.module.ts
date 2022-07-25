@@ -1,6 +1,6 @@
 import { CreateAccountComponent } from './components/accounts/create-account/create-account.component';
 import { EditAccountComponent } from './components/accounts/edit-account/edit-account.component';
-import { GraficComponent } from './components/graphic/graphic.component';
+import { GraphicComponent } from './components/graphic/graphic.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
@@ -19,7 +19,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: 'file-upload', component: UploadComponent },
-      { path: 'grafic', component: GraficComponent },
+      { path: 'graphic', component: GraphicComponent },
       { path: 'account/edit', component: EditAccountComponent },
     ]
   },

@@ -13,7 +13,7 @@ import { HomeComponent } from './components/home/home.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ToastrModule } from 'ngx-toastr';
 import { FileUploadModule } from 'ng2-file-upload';
-import { GraficComponent } from './components/graphic/graphic.component';
+import { GraphicComponent } from './components/graphic/graphic.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
@@ -26,7 +26,7 @@ import { CreateAccountComponent } from './components/accounts/create-account/cre
     NavComponent,
     HomeComponent,
     UploadComponent,
-    GraficComponent,
+    GraphicComponent,
     LoginComponent,
     NotFoundComponent,
     EditAccountComponent,

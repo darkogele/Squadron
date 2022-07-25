@@ -29,22 +29,7 @@ export class AppComponent {
     datasets: [{
       data: this.data.map(x => x.number),
       backgroundColor: this.data.map(x => x.color),
-      //label: this.data[0].label
     }]
-    // labels: [''],
-    // datasets: this.data.map(x => {
-    //   return {
-    //     data: [x.data],
-    //     label: x.label,
-    //     backgroundColor: x.color,
-    //     borderColor: x.color,
-    //     borderWidth: 1
-    //   };
-    // })
-  }
-
-  constructor() {
-    console.log(this.chartData);
   }
 
 }
