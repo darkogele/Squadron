@@ -1,9 +1,12 @@
+import { take } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
 import { UploadService } from 'src/app/services/upload.service';
 import { environment } from 'src/environments/environment';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-upload',
@@ -17,14 +20,19 @@ export class UploadComponent implements OnInit {
   uploader: FileUploader;
   baseUrl = environment.baseUrl;
   hasBaseDropzoneOver = false;
+  user: User | null = null;
 
-  constructor(private uploadService: UploadService, private toastr: ToastrService, private router: Router) {
+  constructor(private userService: UserService, private toastr: ToastrService, private router: Router) {
+    this.userService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
+
     this.uploader = new FileUploader({
       url: this.baseUrl + 'files/add-file',
       isHTML5: true,
       removeAfterUpload: true,
       autoUpload: false,
-      maxFileSize: 10 * 1024 * 1024
+      maxFileSize: 10 * 1024 * 1024,
+      queueLimit: 1,
+      authToken: 'Bearer ' + this.user?.token
     });
 
     this.uploader.onAfterAddingFile = (file) => {

@@ -1,30 +1,15 @@
-<!-- <div class="row" style="margin-bottom:15px;">
-  <div class="col-md-3">
-    <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;" multiple>
-    <button type="button" class="btn btn-success" (click)="file.click()">Upload File</button>
-  </div>
-  <div class="col-md-4">
-    <span class="upload" *ngIf="progress > 0">
-      {{progress}}%
-    </span>
-    <span class="upload" *ngIf="message">
-      {{message}}
-    </span>
-  </div>
-</div> -->
-
-
 <div class="row" style="margin-bottom:15px;">
   <div class="row mt-3">
 
     <div class="col-md-3">
-      <h3>Add Files</h3>
+      <h3>Add File</h3>
 
       <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropzoneOver}" (fileOver)="fileOverBase($event)"
         [uploader]="uploader" class="card bg-faded p-3 text-center mb-3 my-drop-zone">
         <i class="fa fa-upload fa-3x"></i>
-        Drop files here
+        Drop file here
       </div>
+
       <!--
       Multiple
       <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br /> -->
@@ -78,6 +63,5 @@
       </div>
 
     </div>
-
   </div>
 </div>

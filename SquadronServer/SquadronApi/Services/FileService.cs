@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using Microsoft.EntityFrameworkCore;
+using SquadronApi.Core;
 using SquadronApi.Data;
 using SquadronApi.Dto_s;
 using SquadronApi.Entities;
@@ -16,7 +17,7 @@ public class FileService : IFileService
         _context = context;
     }
 
-    public async Task<int> SaveFile(IFormFile file)
+    public async Task<ServerResponse<int>> SaveFile(IFormFile file)
     {
         var fileName = Path.GetFileName(file.FileName);
         var listOfFiles = new List<UploadedFileLine>();
@@ -30,6 +31,9 @@ public class FileService : IFileService
                 if (line is null) break;
 
                 var values = line.Split(separator: ",").Select(x => x.Trim()).ToArray();
+
+                if (values.Length != 3)
+                    return ServerResponse<int>.Failure("Invalid Values in file");
 
                 var validateColor = colors.Contains(values[0].ToLower().Trim());
                 var validateNumber = int.TryParse(values[1], out var number);
@@ -58,10 +62,10 @@ public class FileService : IFileService
             await _context.File.AddAsync(fileForDb);
             await _context.SaveChangesAsync();
 
-            return fileForDb.Id;
+            return ServerResponse<int>.Success(fileForDb.Id);
         }
 
-        return 0;
+        return ServerResponse<int>.Failure("Bad file");
     }
 
     public async Task<List<string>> GetListOfAllFiles()

@@ -18,13 +18,13 @@
         </mat-error>
       </mat-form-field>
 
-      <button mat-raised-button class="loginBtn" color="primary" (click)="login()" type="button"
+      <button mat-raised-button class="loginBtn" color="primary" (click)="login()" type="submit"
         [disabled]="loginForm.invalid">
         Login
       </button>
 
       <button mat-stroked-button class="passwordBtn" color="primary" routerLink='/account/create'
-        routerLinkActive="router-link-active" type=" button">
+        routerLinkActive="router-link-active" type="button">
         Register Account
       </button>
     </form>

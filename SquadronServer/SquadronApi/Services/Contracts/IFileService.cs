@@ -1,10 +1,13 @@
-﻿using SquadronApi.Dto_s;
+﻿using SquadronApi.Core;
+using SquadronApi.Dto_s;
 
 namespace SquadronApi.Services.Contracts;
 
 public interface IFileService
 {
-    Task<int> SaveFile(IFormFile file);
+    Task<ServerResponse<int>> SaveFile(IFormFile file);
+    
     Task<List<UploadedFileDto>> GetLastSavedFile();
+
     Task<List<string>> GetListOfAllFiles();
 }

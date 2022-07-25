@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SquadronApi.Services.Contracts;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace SquadronApi.Controllers;
 
-[ApiController, Authorize]
 public class FilesController : BaseController
 {
     private readonly IFileService _fileService;
@@ -15,6 +14,7 @@ public class FilesController : BaseController
     }
 
     [HttpPost("Add-File")]
+    [SwaggerOperation(Summary = "Add file.txt")]
     public async Task<IActionResult> AddPhoto(IFormFile file)
     {
         if (file.Length <= 0)
@@ -23,16 +23,18 @@ public class FilesController : BaseController
         if (file.ContentType != "text/plain")
             return BadRequest("Wrong file format");
 
-        return Ok(await _fileService.SaveFile(file));
+        return HandleResult(await _fileService.SaveFile(file));
     }
 
     [HttpGet("Grid-View")]
+    [SwaggerOperation(Summary = "Grid View of all files")]
     public async Task<IActionResult> FilesGridView()
     {
         return Ok(await _fileService.GetListOfAllFiles());
     }
 
     [HttpGet("latest-File")]
+    [SwaggerOperation(Summary = "Get data for latest uploaded file")]
     public async Task<IActionResult> LatestFile()
     {
         return Ok(await _fileService.GetLastSavedFile());
