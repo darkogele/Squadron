@@ -1,4 +1,4 @@
-<form [formGroup]="createAccountForm" class="formGeneral">
+<form [formGroup]="createAccountForm" class="formGeneral" >
   <div class="row">
     <mat-form-field appearance="fill" class="">
       <input matInput type="text" placeholder="Display name" formControlName="displayName">
@@ -38,6 +38,10 @@
   </div>
 
   <div align="end">
+    <button mat-raised-button color="accent" class="btn-space" [routerLink]="['/login']"
+      routerLinkActive="router-link-active"> Cancel
+    </button>
+
     <button mat-raised-button color="primary" (click)="createAccount()" align="end" type="button"
       [disabled]="createAccountForm.invalid">
       Create Account
