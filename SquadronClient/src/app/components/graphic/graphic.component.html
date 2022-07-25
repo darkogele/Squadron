@@ -8,7 +8,16 @@
     </div>
   </div>
 </div>-->
-<div>
+<div *ngIf="uploadedFilalData.length == 0">
+  <h3>No data uploaded</h3>
+  <div class="text-center">
+    <button mat-raised-button color="primary" [routerLink]="['/file-upload']"
+      routerLinkActive="router-link-active">Upload
+      File</button>
+  </div>
+</div>
+
+<div *ngIf="uploadedFilalData.length != 0">
   <h3>Graphic display</h3>
   <div style="display: block" class="graphic">
     <canvas baseChart [data]="chartData" [options]="barChartOptions" [plugins]="barChartPlugins"

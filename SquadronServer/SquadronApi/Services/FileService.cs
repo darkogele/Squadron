@@ -1,20 +1,22 @@
-﻿using System.Drawing;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SquadronApi.Core;
 using SquadronApi.Data;
 using SquadronApi.Dto_s;
 using SquadronApi.Entities;
 using SquadronApi.Services.Contracts;
+using System.Drawing;
 
 namespace SquadronApi.Services;
 
 public class FileService : IFileService
 {
     private readonly DataContext _context;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public FileService(DataContext context)
+    public FileService(DataContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<ServerResponse<int>> SaveFile(IFormFile file)
@@ -53,10 +55,11 @@ public class FileService : IFileService
 
         // You can use this as json in sql or in monogo/comsmos to make things more easy
         var jsonData = System.Text.Json.JsonSerializer.Serialize(listOfFiles);
+        var userId = _httpContextAccessor.HttpContext?.User.GetUserId();
 
-        if (listOfFiles.Count > 0)
+        if (listOfFiles.Count > 0 && userId is not null)
         {
-            var fileForDb = new UploadedFile { Lines = listOfFiles, Name = fileName };
+            var fileForDb = new UploadedFile { Lines = listOfFiles, Name = fileName, UserId = (int)userId };
 
             await _context.FileLines.AddRangeAsync(listOfFiles);
             await _context.File.AddAsync(fileForDb);
@@ -77,28 +80,31 @@ public class FileService : IFileService
 
     public async Task<List<UploadedFileDto>> GetLastSavedFile()
     {
-        var finalId = await _context.File.MaxAsync(x => x.Id);
-
-        var data = await _context.FileLines.Where(x => x.UploadedFileId == finalId)
-            .Select(x => new UploadedFileDto
-            {
-                Color = x.Color,
-                Label = x.Label,
-                Number = x.Number
-            })
-            .ToListAsync();
-
-        var data2 = await _context.File.Include(x => x.Lines)
-            .OrderByDescending(x => x.Id)
-            .FirstAsync();
-
-        var dto = data2.Lines.ConvertAll(line => new UploadedFileDto
+        if (await _context.File.AnyAsync())
         {
-            Label = line.Label,
-            Number = line.Number,
-            Color = line.Color
-        });
+            var finalId = await _context.File.MaxAsync(x => x.Id);
 
-        return dto;
+            var data = await _context.FileLines.Where(x => x.UploadedFileId == finalId)
+                .Select(x => new UploadedFileDto
+                {
+                    Color = x.Color,
+                    Label = x.Label,
+                    Number = x.Number
+                })
+                .ToListAsync();
+
+            var data2 = await _context.File.Include(x => x.Lines)
+                .OrderByDescending(x => x.Id)
+                .FirstAsync();
+
+            return data2.Lines.ConvertAll(line => new UploadedFileDto
+            {
+                Label = line.Label,
+                Number = line.Number,
+                Color = line.Color
+            });
+        }
+
+        return new List<UploadedFileDto>();
     }
 }
