@@ -10,11 +10,7 @@
         Drop file here
       </div>
 
-      <!--
-      Multiple
-      <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br /> -->
-
-      <input type="file" ng2FileSelect [uploader]="uploader" style="display: none" #fileUploader />
+      <input #fileInput type="file" ng2FileSelect [uploader]="uploader" style="display: none" #fileUploader />
       <button mat-raised-button color="primary" (click)="fileUploader.click()">File Upload</button>
     </div>
 
@@ -48,17 +44,17 @@
 
         <button type="button" class="btn btn-success btn-s btn-space" (click)="uploader.uploadAll()"
           [disabled]="!uploader.getNotUploadedItems().length">
-          <mat-icon>cloud_upload</mat-icon> Upload
+          <mat-icon>cloud_upload</mat-icon><span>Upload</span>
         </button>
 
         <button type="button" class="btn btn-warning btn-s btn-space" (click)="uploader.cancelAll()"
           [disabled]="!uploader.isUploading">
-          <mat-icon>cancel</mat-icon> Cancel
+          <mat-icon>cancel</mat-icon> <span>Cancel</span>
         </button>
 
         <button type="button" class="btn btn-danger btn-s btn-space" (click)="uploader.clearQueue()"
           [disabled]="!uploader.queue.length">
-          <mat-icon>delete</mat-icon> Remove
+          <mat-icon>delete</mat-icon> <span>Remove</span>
         </button>
       </div>
 

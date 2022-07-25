@@ -1,6 +1,6 @@
 import { take } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
@@ -21,6 +21,7 @@ export class UploadComponent implements OnInit {
   baseUrl = environment.baseUrl;
   hasBaseDropzoneOver = false;
   user: User | null = null;
+  @ViewChild('fileInput', { static: true }) fileInput!: ElementRef;
 
   constructor(private userService: UserService, private toastr: ToastrService, private router: Router) {
     this.userService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
@@ -32,11 +33,13 @@ export class UploadComponent implements OnInit {
       autoUpload: false,
       maxFileSize: 10 * 1024 * 1024,
       queueLimit: 1,
+      allowedMimeType: ['text/plain'],
       authToken: 'Bearer ' + this.user?.token
     });
 
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
+      this.fileInput.nativeElement.value = '';
     }
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
@@ -52,6 +55,7 @@ export class UploadComponent implements OnInit {
       }
     }
   }
+
 
   ngOnInit(): void { }
 
