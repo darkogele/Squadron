@@ -1,0 +1,46 @@
+<form [formGroup]="createAccountForm" class="formGeneral">
+  <div class="row">
+    <mat-form-field appearance="fill" class="">
+      <input matInput type="text" placeholder="Display name" formControlName="displayName">
+      <mat-error *ngIf="displayName.hasError('required')">Displayname is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="">
+      <input matInput type="email" placeholder="Email" formControlName="email">
+      <mat-error *ngIf="email.hasError('required')">*Email is required</mat-error>
+      <mat-error *ngIf="email.hasError('email')">
+        Invalid email address. Valid e-mail can contain only latin letters, numbers, '@' and '.'"
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>New Passowrd</mat-label>
+      <input matInput type="password" placeholder="Password" formControlName="password">
+      <mat-error *ngIf="password.hasError('required')">*Password is required</mat-error>
+      <mat-error *ngIf="password.hasError('strongPassowrd')">
+        Password must be complex at least One number, Upper letter, Small letter
+      </mat-error>
+      <mat-error *ngIf="password.hasError('minlength')">
+        Password must have at least {{minPw}} characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Confirm Passowrd</mat-label>
+      <input matInput type="password" placeholder="Confirm password" formControlName="confirmPassword">
+      <mat-error *ngIf="confirmPassword.hasError('required')">
+        Please confirm your password
+      </mat-error>
+      <mat-error *ngIf="confirmPassword.hasError('isMatching')">
+        *Passwords don't match
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div align="end">
+    <button mat-raised-button color="primary" (click)="createAccount()" align="end" type="button"
+      [disabled]="createAccountForm.invalid">
+      Create Account
+    </button>
+  </div>
+</form>

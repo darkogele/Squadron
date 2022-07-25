@@ -84,6 +84,33 @@ public class UserService : IUserService
             : ServerResponse<UserDto>.Failure($"Failed to update the user: {updateUserDto.DisplayName} in database");
     }
 
+    public async Task<ServerResponse<UserDto>> Register(RegisterDto registerDto)
+    {
+        if (await UserExists(registerDto.Email))
+            return ServerResponse<UserDto>.Failure("Email is already taken");
+
+        CreatePasswordHash(registerDto.Password, out var passwordHash, out var passwordSalt);
+
+        var userForDb = new Entities.User
+        {
+            Email = registerDto.Email,
+            DisplayName = registerDto.DisplayName,
+            PasswordHash = passwordHash,
+            PasswordSalt = passwordSalt
+        };
+
+        await _context.Users.AddAsync(userForDb);
+
+        var result = await _context.SaveChangesAsync() > 0;
+
+        return result
+           ? ServerResponse<UserDto>.Success(
+                           new UserDto(userForDb.Email,
+                           await _tokenService.CreateTokenAsync(userForDb),
+                           userForDb.DisplayName))
+           : ServerResponse<UserDto>.Failure($"Failed to update the user: {userForDb.DisplayName} in database");
+    }
+
     private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
         using var hmac = new HMACSHA512();
@@ -97,5 +124,10 @@ public class UserService : IUserService
         var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
         return computeHash.SequenceEqual(passwordHash);
+    }
+
+    private async Task<bool> UserExists(string email)
+    {
+        return await _context.Users.AnyAsync(x => x.Email.ToLower() == email.ToLower());
     }
 }

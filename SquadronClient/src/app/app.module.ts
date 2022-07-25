@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { EditAccountComponent } from './components/accounts/edit-account/edit-account.component';
+import { CreateAccountComponent } from './components/accounts/create-account/create-account.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,9 @@ import { EditAccountComponent } from './components/accounts/edit-account/edit-ac
     GraficComponent,
     LoginComponent,
     NotFoundComponent,
-    EditAccountComponent
+    EditAccountComponent,
+    CreateAccountComponent,
+
   ],
   imports: [
     BrowserModule,

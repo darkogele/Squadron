@@ -10,4 +10,6 @@ public interface IUserService
     Task<ServerResponse<bool>> ChangePassword(ChangePasswordDto changePasswordDto);
 
     Task<ServerResponse<UserDto>> UpdateUser(UpdateUserDto updateUserDto);
+
+    Task<ServerResponse<UserDto>> Register(RegisterDto registerDto);
 }

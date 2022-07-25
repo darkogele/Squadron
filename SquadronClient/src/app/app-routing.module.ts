@@ -1,3 +1,4 @@
+import { CreateAccountComponent } from './components/accounts/create-account/create-account.component';
 import { EditAccountComponent } from './components/accounts/edit-account/edit-account.component';
 import { GraficComponent } from './components/graphic/graphic.component';
 import { NgModule } from '@angular/core';
@@ -11,6 +12,7 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'account/create', component: CreateAccountComponent },
   {
     path: '',
     runGuardsAndResolvers: 'always',

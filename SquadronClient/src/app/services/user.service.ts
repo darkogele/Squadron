@@ -69,4 +69,17 @@ export class UserService {
       })
     );
   }
+
+  createUser(user: User): Observable<boolean> {
+    return this.http.post<User>(this.baseUrl + 'users/register', user).pipe(
+      map((response) => {
+        if (response) {
+          this.setCurrentUser(response);
+          return true;
+        }
+        return false;
+      })
+    )
+  }
+
 }

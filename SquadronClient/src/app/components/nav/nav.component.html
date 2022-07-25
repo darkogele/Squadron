@@ -17,17 +17,13 @@
 
   <div *ngIf="user">
     <a mat-button [matMenuTriggerFor]="userMenu">
-      Welcome {{user.displayName}}
+      Welcome {{user.displayName | titlecase }}
     </a>
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item (click)="editAccount()">
         <mat-icon>account_circle</mat-icon>
         <span>Edit Account</span>
       </button>
-      <!-- <button mat-menu-item (click)="createAccount()">
-        <mat-icon>account_box</mat-icon>
-        <span>Create Account</span>
-      </button> -->
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
