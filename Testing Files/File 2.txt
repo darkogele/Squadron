@@ -1,0 +1,5 @@
+red, 40, Skopje
+green, 28, Ohrid
+blue, 33, Tetovo
+red, 49, Куманово
+yellow, 69, Dubai
