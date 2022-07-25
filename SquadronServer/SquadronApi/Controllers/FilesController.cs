@@ -4,9 +4,8 @@ using SquadronApi.Services.Contracts;
 
 namespace SquadronApi.Controllers;
 
-[Route("api/[controller]")]
 [ApiController, Authorize]
-public class FilesController : ControllerBase
+public class FilesController : BaseController
 {
     private readonly IFileService _fileService;
 

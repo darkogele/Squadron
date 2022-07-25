@@ -1,3 +1,4 @@
+import { EditAccountComponent } from './components/accounts/edit-account/edit-account.component';
 import { GraficComponent } from './components/graphic/graphic.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'file-upload', component: UploadComponent },
   { path: 'grafic', component: GraficComponent },
+  { path: 'account/edit', component: EditAccountComponent },
   { path: '**', component: NotFoundComponent, pathMatch: 'full' }
 ];
 

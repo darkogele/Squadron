@@ -5,9 +5,7 @@ using SquadronApi.Services.Contracts;
 
 namespace SquadronApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController
     {
         private readonly IUserService _userService;
 
@@ -17,12 +15,22 @@ namespace SquadronApi.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var result = await _userService.Login(loginDto);
+            return HandleResult(await _userService.Login(loginDto));
+        }
 
-            return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Message);
+        [HttpPost("Change-Password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            return HandleResult(await _userService.ChangePassword(changePasswordDto));
+        }
+
+        [HttpPut("Edit-user")]
+        public async Task<IActionResult> UpdateUser(UpdateUserDto updateUserDto)
+        {
+            return HandleResult(await _userService.UpdateUser(updateUserDto));
         }
     }
 }

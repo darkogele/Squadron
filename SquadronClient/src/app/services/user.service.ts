@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Login, User } from '../models/user';
+import { ChangePassword, Login, User } from '../models/user';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ValidatorFn, AbstractControl, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,27 @@ export class UserService {
     const decodedToken = helper.decodeToken(token);
     const isExpired = helper.isTokenExpired(token);
     if (isExpired) this.logout();
+  }
+
+  matchValues(matchTo: string): ValidatorFn {
+    return (control: AbstractControl) => {
+      if (control.parent) {
+        return control?.value === (control?.parent as FormGroup).controls[matchTo].value
+          ? null : { isMatching: true };
+      }
+      return null;
+    };
+  }
+
+  changePassword(changePassword: ChangePassword): Observable<boolean> {
+    return this.http.post<boolean>(this.baseUrl + 'users/change-password', changePassword);
+  }
+
+  editUserData(user: User): Observable<void> {
+    return this.http.put<User>(this.baseUrl + 'users/edit-user', user).pipe(
+      map(response => {
+        if (response) this.setCurrentUser(response);
+      })
+    );
   }
 }

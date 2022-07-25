@@ -21,8 +21,26 @@ export class ErrorInterceptor implements HttpInterceptor {
           switch (error.status) {
             case 400:
               // TODO add more types of 400 responces such as model state errors
-              debugger;
-              this.toastr.error(error.error, error.status);
+              if (error.error.errors) {
+                const modelStateErrors = [];
+                // FIll modelstate with the errors from key
+                for (const key in error.error.errors) {
+                  if (error.error.errors[key]) {
+                    modelStateErrors.push(error.error.errors[key]);
+                  }
+                  // Iterate in each error
+                  for (const errorInModel in modelStateErrors) {
+                    if (modelStateErrors.hasOwnProperty(errorInModel)) {
+                      this.toastr.error(modelStateErrors[errorInModel]);
+                    }
+                  }
+                  throw modelStateErrors.flat();
+                }
+              }
+              else if (typeof (error.error) === 'object')
+                this.toastr.error(error.error.title, error.status);
+              else
+                this.toastr.error(error.error, error.status);
               break;
             case 401:
               if (error?.error?.title)

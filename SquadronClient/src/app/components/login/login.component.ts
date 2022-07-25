@@ -13,7 +13,7 @@ import { User } from 'src/app/models/user';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   minPw: number = 5;
-  //user: User | null = null;
+
 
   constructor(private fb: FormBuilder, private router: Router, private userService: UserService, private toastrService: ToastrService) {
 
@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.userService.currentUser$.subscribe(user => {
       if (user) {
-        this.toastrService.info(`Welcome ${user.displayName}`);
         this.router.navigateByUrl('/');
       }
     });

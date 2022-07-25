@@ -17,6 +17,7 @@ import { GraficComponent } from './components/graphic/graphic.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { EditAccountComponent } from './components/accounts/edit-account/edit-account.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
     UploadComponent,
     GraficComponent,
     LoginComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    EditAccountComponent
   ],
   imports: [
     BrowserModule,

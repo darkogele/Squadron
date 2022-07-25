@@ -12,6 +12,8 @@ public static partial class Register
         // Dotnet build in services
         services.AddControllers();
 
+        services.AddHttpContextAccessor();
+
         services.AddEndpointsApiExplorer();
 
         services.AddDbContext<DataContext>(options =>
