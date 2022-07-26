@@ -34,21 +34,21 @@ public class FileService : IFileService
 
                 var values = line.Split(separator: ",").Select(x => x.Trim()).ToArray();
 
-                if (values.Length != 3)
-                    return ServerResponse<int>.Failure("Invalid Values in file");
-
-                var validateColor = colors.Contains(values[0].ToLower().Trim());
-                var validateNumber = int.TryParse(values[1], out var number);
-                var validateLabel = values[2].Length >= 3;
-
-                if (validateColor && validateNumber && validateLabel)
+                if (values.Length == 3)
                 {
-                    listOfFiles.Add(new UploadedFileLine()
+                    var validateColor = colors.Contains(values[0].ToLower().Trim());
+                    var validateNumber = int.TryParse(values[1], out var number);
+                    var validateLabel = values[2].Length >= 3;
+
+                    if (validateColor && validateNumber && validateLabel)
                     {
-                        Color = values[0],
-                        Number = number,
-                        Label = values[2]
-                    });
+                        listOfFiles.Add(new UploadedFileLine()
+                        {
+                            Color = values[0],
+                            Number = number,
+                            Label = values[2]
+                        });
+                    }
                 }
             }
         }
@@ -68,14 +68,13 @@ public class FileService : IFileService
             return ServerResponse<int>.Success(fileForDb.Id);
         }
 
-        return ServerResponse<int>.Failure("Bad file");
+        return ServerResponse<int>.Failure("Bad file, invalid Values in file");
     }
 
     public async Task<List<string>> GetListOfAllFiles()
     {
-        var data = await _context.File.OrderByDescending(x => x.Id)
+        return await _context.File.OrderByDescending(x => x.Id)
             .Select(x => x.Name).ToListAsync();
-        return data;
     }
 
     public async Task<List<UploadedFileDto>> GetLastSavedFile()
